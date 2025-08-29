@@ -57,8 +57,6 @@ jobs:
         echo "prompt=$RANDOM_PROMPT" >> $GITHUB_OUTPUT
     
     - name: Gerar imagem diária
-      env:
-        HF_TOKEN: ${{ secrets.HF_TOKEN }}
       run: |
         python action_runner.py \
           --prompt "${{ steps.random-prompt.outputs.prompt }}" \
