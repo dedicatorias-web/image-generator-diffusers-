@@ -4,15 +4,10 @@ import torch
 from diffusers import StableDiffusionPipeline, DPMSolverMultistepScheduler
 from datetime import datetime
 import argparse
-from huggingface_hub import login
 
 # Configurações para GitHub Actions
 os.environ['TRANSFORMERS_CACHE'] = '/home/runner/.cache/huggingface'
 os.environ['HF_HOME'] = '/home/runner/.cache/huggingface'
-
-# Login no Hugging Face se token estiver disponível
-if 'HF_TOKEN' in os.environ:
-    login(token=os.environ['HF_TOKEN'])
 
 class LightweightImageGenerator:
     def __init__(self, model_id="CompVis/stable-diffusion-v1-4"):
