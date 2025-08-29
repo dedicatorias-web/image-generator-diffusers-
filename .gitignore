@@ -1,1 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
 
+# Generated images
+generated_images/*.png
+generated_images/*.jpg
+generated_images/*.jpeg
+
+# Model cache
+models/
+.cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
