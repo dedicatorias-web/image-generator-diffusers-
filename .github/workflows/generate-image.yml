@@ -71,8 +71,6 @@ jobs:
         pip install -r requirements.txt
     
     - name: Gerar imagem
-      env:
-        HF_TOKEN: ${{ secrets.HF_TOKEN }}
       run: |
         python action_runner.py \
           --prompt "${{ github.event.inputs.prompt }}" \
