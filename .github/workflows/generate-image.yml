@@ -12,21 +12,21 @@ on:
         required: false
         default: ''
       steps:
-        description: 'Número de passos de inferência'
+        description: 'Número de passos de inferência (máx 25)'
         required: false
-        default: '30'
+        default: '15'
       guidance:
         description: 'Escala de orientação'
         required: false
         default: '7.5'
       width:
-        description: 'Largura da imagem'
+        description: 'Largura da imagem (máx 512)'
         required: false
-        default: '512'
+        default: '256'
       height:
-        description: 'Altura da imagem'
+        description: 'Altura da imagem (máx 512)'
         required: false
-        default: '512'
+        default: '256'
       seed:
         description: 'Seed para reprodutibilidade (opcional)'
         required: false
@@ -39,6 +39,7 @@ on:
 jobs:
   generate:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     
     steps:
     - name: Checkout código
@@ -53,7 +54,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ~/.cache/pip
-        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+        key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}-v2
         restore-keys: |
           ${{ runner.os }}-pip-
     
@@ -61,7 +62,7 @@ jobs:
       uses: actions/cache@v4
       with:
         path: ~/.cache/huggingface
-        key: ${{ runner.os }}-huggingface-models-v1
+        key: ${{ runner.os }}-huggingface-models-v2
         restore-keys: |
           ${{ runner.os }}-huggingface-models-
     
@@ -69,6 +70,11 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+    
+    - name: Verificar instalação
+      run: |
+        python -c "import torch; print(f'PyTorch: {torch.__version__}')"
+        python -c "import diffusers; print(f'Diffusers: {diffusers.__version__}')"
     
     - name: Gerar imagem
       run: |
@@ -93,6 +99,6 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add generated_images/*.png
+        git add generated_images/*.png || echo "Nenhuma imagem para adicionar"
         git diff --staged --quiet || git commit -m "Add generated images from workflow run #${{ github.run_number }}"
-        git push
+        git push || echo "Nada para fazer push"
