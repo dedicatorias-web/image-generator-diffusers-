@@ -42,15 +42,15 @@ jobs:
     
     steps:
     - name: Checkout código
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     
     - name: Configurar Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.10'
     
     - name: Cache de dependências
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.cache/pip
         key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
@@ -58,7 +58,7 @@ jobs:
           ${{ runner.os }}-pip-
     
     - name: Cache do modelo
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.cache/huggingface
         key: ${{ runner.os }}-huggingface-models-v1
@@ -85,7 +85,7 @@ jobs:
           --batch ${{ github.event.inputs.batch }}
     
     - name: Upload imagens geradas
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: generated-images-${{ github.run_number }}
         path: generated_images/*.png
